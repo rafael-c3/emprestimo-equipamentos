@@ -1,0 +1,64 @@
+http
+@baseUrl = http://localhost:8080
+@usuarioId = COLE_AQUI_O_UUID_DO_USUARIO
+@equipamentoId = COLE_AQUI_O_UUID_DO_EQUIPAMENTO
+@emprestimoId = COLE_AQUI_O_UUID_DO_EMPRESTIMO
+
+### Cadastrar usuário
+POST {{baseUrl}}/api/v1/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Carlos Exemplo",
+  "email": "carlos.teste.001@exemplo.edu.br",
+  "matricula": "TESTE001"
+}
+
+### Consultar usuário
+GET {{baseUrl}}/api/v1/usuarios/{{usuarioId}}
+
+### Cadastrar equipamento
+POST {{baseUrl}}/api/v1/equipamentos
+Content-Type: application/json
+
+{
+  "nome": "Projetor de Teste",
+  "tipo": "Projetor",
+  "patrimonio": "TESTE001"
+}
+
+### Consultar equipamento
+GET {{baseUrl}}/api/v1/equipamentos/{{equipamentoId}}
+
+### Listar equipamentos disponíveis
+GET {{baseUrl}}/api/v1/equipamentos/disponiveis
+
+### Solicitar empréstimo
+POST {{baseUrl}}/api/v1/emprestimos
+Content-Type: application/json
+
+{
+  "usuarioId": "{{usuarioId}}",
+  "equipamentoId": "{{equipamentoId}}"
+}
+
+### Consultar empréstimo
+GET {{baseUrl}}/api/v1/emprestimos/{{emprestimoId}}
+
+### Consultar empréstimos do usuário
+GET {{baseUrl}}/api/v1/emprestimos/usuarios/{{usuarioId}}
+
+### Tentar novo empréstimo do mesmo equipamento ocupado
+POST {{baseUrl}}/api/v1/emprestimos
+Content-Type: application/json
+
+{
+  "usuarioId": "{{usuarioId}}",
+  "equipamentoId": "{{equipamentoId}}"
+}
+
+### Devolver empréstimo
+PATCH {{baseUrl}}/api/v1/emprestimos/{{emprestimoId}}/devolucao
+
+### Consultar equipamento após devolução
+GET {{baseUrl}}/api/v1/equipamentos/{{equipamentoId}}
