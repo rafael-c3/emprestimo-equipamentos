@@ -53,3 +53,33 @@ O painel do Eureka fica em:
 
 ```text
 http://localhost:8761
+
+## Etapa 2 — Condição do equipamento e resiliência
+
+Os equipamentos possuem uma condição, representada pelos valores `BOM` e
+`AVARIADO`. A condição pode ser atualizada pelo endpoint:
+
+```http
+PATCH /api/v1/equipamentos/{id}/condicao
+Content-Type: application/json
+
+{
+  "condicao": "AVARIADO"
+}
+
+Durante a devolução, o msemprestimo usa OpenFeign para atualizar a condição no
+msequipamento. Se essa atualização falhar por indisponibilidade técnica, a
+devolução não é concluída e a API retorna 503 Service Unavailable. Se o
+equipamento não existir, a API retorna 404 Not Found.
+
+O circuit breaker atualizarCondicaoEquipamento, configurado com Resilience4j,
+usa janela de 5 chamadas, exige pelo menos 3 chamadas para avaliar falhas,
+abre com taxa de falha de 50%, permanece aberto por 30 segundos e permite
+2 chamadas no estado semiaberto.
+
+Cenários verificados
+- Devolução com condição BOM.
+- Devolução com condição AVARIADO.
+- Equipamento inexistente retorna 404.
+- msequipamento indisponível retorna 503, sem concluir a devolução.
+- Recuperação da devolução após o msequipamento voltar a ficar disponível.
