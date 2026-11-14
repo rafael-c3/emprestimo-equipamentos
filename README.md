@@ -53,6 +53,7 @@ O painel do Eureka fica em:
 
 ```text
 http://localhost:8761
+```
 
 ## Etapa 2 — Condição do equipamento e resiliência
 
